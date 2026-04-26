@@ -151,6 +151,12 @@
     transform: rotate(90deg);
     }
 
+    .mouth-open {
+    width: 9px;
+    height: 7px;
+    border-radius: 50%;
+    }
+
     .food {
     position: absolute;
     width: 20px;
@@ -269,7 +275,7 @@
   const cellSize = 20;
   const boardSize = 20;
 
-    function Snake({ snake, direction }) {
+    function Snake({ snake, direction, isEating }) {
     return (
         <>
         {snake.map((part, index) => {
@@ -291,7 +297,7 @@
                 <>
                     <div className={`eye eye1 ${getEyeClass(direction)}`}></div>
                     <div className={`eye eye2 ${getEyeClass(direction)}`}></div>
-                    <div className={`mouth ${getMouthClass(direction)}`}></div>
+                    <div className={`mouth ${getMouthClass(direction)} ${isEating ? "mouth-open" : ""}`}></div>
                     <div className={`eye eye1 ${getEyeClass(direction)}`}></div>
                     <div className={`eye eye2 ${getEyeClass(direction)}`}></div>
                 </>
@@ -336,10 +342,10 @@
     return <h2>Puntaje: {score}</h2>;
   }
 
-  function Board({ snake, food, direction }) {
+  function Board({ snake, food, direction, isEating }) {
     return (
       <div className="board">
-        <Snake snake={snake} direction={direction} />
+        <Snake snake={snake} direction={direction} isEating={isEating} />
         <Food food={food} />
       </div>
     );
@@ -370,6 +376,7 @@
 
     const [direction, setDirection] = useState({ x: 1, y: 0 });
     const [food, setFood] = useState({ x: 5, y: 5 });
+    const [isEating, setIsEating] = useState(false);
     const [score, setScore] = useState(0);
     const [gameOver, setGameOver] = useState(false);
     const [gameStarted, setGameStarted] = useState(false);
@@ -415,6 +422,8 @@
         if (ateFood) {
             setFood(generateFood());
             setScore(prev => prev + 1);
+            setIsEating(true);
+            setTimeout(() => setIsEating(false), 180);
             return [newHead, ...prevSnake];
         }
 
@@ -492,7 +501,7 @@
             <>
             <h1>Snake React</h1>
             <Score score={score} />
-            <Board snake={snake} food={food} direction={direction} />
+            <Board snake={snake} food={food} direction={direction} isEating={isEating} />
             </>
         )}
 
