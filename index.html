@@ -26,12 +26,22 @@
     }
 
     .snake-part {
-        position: absolute;
-        width: 20px;
-        height: 20px;
-        background-color: limegreen;
-        border: 1px solid #111;
-        box-sizing: border-box;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: limegreen;
+    border: 1px solid #111;
+    box-sizing: border-box;
+    }
+
+    .head {
+    background-color: #00ffcc;
+    border-radius: 4px;
+    }
+
+    .tail {
+    background-color: #006633;
+    border-radius: 2px;
     }
 
     .food {
@@ -46,29 +56,36 @@
 
 <body>
   <div id="root"></div>
-  
+
 <script type="text/babel">
   const { useState, useEffect } = React;
 
   const cellSize = 20;
   const boardSize = 20;
 
-  function Snake({ snake }) {
+    function Snake({ snake }) {
     return (
-      <>
-        {snake.map((part, index) => (
-          <div
-            key={index}
-            className="snake-part"
-            style={{
-              left: part.x * cellSize,
-              top: part.y * cellSize
-            }}
-          />
-        ))}
-      </>
+        <>
+        {snake.map((part, index) => {
+            let className = "snake-part";
+
+            if (index === 0) className += " head";
+            else if (index === snake.length - 1) className += " tail";
+
+            return (
+            <div
+                key={index}
+                className={className}
+                style={{
+                left: part.x * 20,
+                top: part.y * 20
+                }}
+            />
+            );
+        })}
+        </>
     );
-  }
+    }
 
   function Food({ food }) {
     return (
