@@ -72,7 +72,7 @@
     height: 20px;
 
     background-color: #7ed957;
-    border: 2px solid #2d6a4f; /* borde grueso tipo dibujo */
+    border: 2px solid #2d6a4f; 
     border-radius: 6px;
     transition: left 0.11s linear, top 0.11s linear;
     }
@@ -342,6 +342,11 @@
     return <h2>Puntaje: {score}</h2>;
   }
 
+    function Level({ score }) {
+    const level = Math.floor(score / 3) + 1;
+    return <h2>Nivel: {level}</h2>;
+    }
+
   function Board({ snake, food, direction, isEating }) {
     return (
       <div className="board">
@@ -379,6 +384,7 @@
     const [isEating, setIsEating] = useState(false);
     const [score, setScore] = useState(0);
     const [gameOver, setGameOver] = useState(false);
+    const [speed, setSpeed] = useState(100);
     const [gameStarted, setGameStarted] = useState(false);
 
     function generateFood() {
@@ -424,15 +430,16 @@
             setScore(prev => prev + 1);
             setIsEating(true);
             setTimeout(() => setIsEating(false), 180);
+            setSpeed(prevSpeed => Math.max(70, prevSpeed - 10));
             return [newHead, ...prevSnake];
         }
 
         return [newHead, ...prevSnake.slice(0, -1)];
         });
-      }, 120);
+      }, speed);
 
       return () => clearInterval(interval);
-    }, [direction, gameOver, food, gameStarted]);
+    }, [direction, gameOver, food, gameStarted, speed]);
 
     useEffect(() => {
     const handleKey = (e) => {
@@ -477,6 +484,7 @@
         setScore(0);
         setGameOver(false);
         setGameStarted(true);
+        setSpeed(180);
     }
 
     return (
@@ -502,6 +510,7 @@
             <h1>Snake React</h1>
             <Score score={score} />
             <Board snake={snake} food={food} direction={direction} isEating={isEating} />
+            <Level score={score} />
             </>
         )}
 
