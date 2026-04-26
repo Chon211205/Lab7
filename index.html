@@ -32,6 +32,7 @@
     background-color: limegreen;
     border: 1px solid #111;
     box-sizing: border-box;
+    transition: left 0.18s linear, top 0.18s linear;
     }
 
     .head {
@@ -212,7 +213,7 @@
 
         return [newHead, ...prevSnake.slice(0, -1)];
         });
-      }, 200);
+      }, 180);
 
       return () => clearInterval(interval);
     }, [direction, gameOver, food]);
