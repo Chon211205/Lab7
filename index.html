@@ -443,6 +443,14 @@
 
     useEffect(() => {
     const handleKey = (e) => {
+   
+        if (e.key == "Enter") {
+            if (!gameStarted || gameOver) {
+                resetGame();
+            }
+            return;
+        }
+
         if (gameOver) return;
 
         setDirection(prev => {
@@ -471,7 +479,7 @@
 
         window.addEventListener("keydown", handleKey);
         return () => window.removeEventListener("keydown", handleKey);
-    }, [gameOver]);
+    }, [gameOver, gameStarted]);
 
     function resetGame() {
         setSnake([
