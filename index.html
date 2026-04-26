@@ -44,6 +44,34 @@
     border-radius: 2px;
     }
 
+    .eye {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: black;
+    border-radius: 50%;
+    }
+
+    /* posiciones base */
+    .eye1 { top: 4px; left: 4px; }
+    .eye2 { top: 4px; right: 4px; }
+
+    /* mirando derecha */
+    .right.eye1 { top: 6px; left: 10px; }
+    .right.eye2 { top: 10px; left: 10px; }
+
+    /* mirando izquierda */
+    .left.eye1 { top: 6px; left: 2px; }
+    .left.eye2 { top: 10px; left: 2px; }
+
+    /* mirando arriba */
+    .up.eye1 { top: 2px; left: 6px; }
+    .up.eye2 { top: 2px; right: 6px; }
+
+    /* mirando abajo */
+    .down.eye1 { bottom: 2px; left: 6px; }
+    .down.eye2 { bottom: 2px; right: 6px; }
+
     .food {
         position: absolute;
         width: 20px;
@@ -63,7 +91,7 @@
   const cellSize = 20;
   const boardSize = 20;
 
-    function Snake({ snake }) {
+    function Snake({ snake, direction }) {
     return (
         <>
         {snake.map((part, index) => {
@@ -80,33 +108,47 @@
                 left: part.x * 20,
                 top: part.y * 20
                 }}
-            />
+            >
+                {index === 0 && (
+                <>
+                    <div className={`eye eye1 ${getEyeClass(direction)}`}></div>
+                    <div className={`eye eye2 ${getEyeClass(direction)}`}></div>
+                </>
+                )}
+            </div>
             );
         })}
         </>
     );
     }
 
-  function Food({ food }) {
-    return (
-      <div
-        className="food"
-        style={{
-          left: food.x * cellSize,
-          top: food.y * cellSize
-        }}
-      />
-    );
-  }
+    function getEyeClass(direction) {
+    if (direction.x === 1) return "right";
+    if (direction.x === -1) return "left";
+    if (direction.y === -1) return "up";
+    if (direction.y === 1) return "down";
+    }
+
+    function Food({ food }) {
+        return (
+        <div
+            className="food"
+            style={{
+            left: food.x * cellSize,
+            top: food.y * cellSize
+            }}
+        />
+        );
+    }
 
   function Score({ score }) {
     return <h2>Puntaje: {score}</h2>;
   }
 
-  function Board({ snake, food }) {
+  function Board({ snake, food, direction }) {
     return (
       <div className="board">
-        <Snake snake={snake} />
+        <Snake snake={snake} direction={direction} />
         <Food food={food} />
       </div>
     );
@@ -195,7 +237,7 @@
         <h1>Snake React</h1>
         <Score score={score} />
         {gameOver && <h2>Game Over</h2>}
-        <Board snake={snake} food={food} />
+        <Board snake={snake} food={food} direction={direction} />
       </div>
     );
   }
