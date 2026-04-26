@@ -178,30 +178,39 @@
 
       const interval = setInterval(() => {
         setSnake(prevSnake => {
-          const newHead = {
+        const newHead = {
             x: prevSnake[0].x + direction.x,
             y: prevSnake[0].y + direction.y
-          };
+        };
 
-          if (
+        if (
             newHead.x < 0 ||
             newHead.y < 0 ||
             newHead.x >= boardSize ||
             newHead.y >= boardSize
-          ) {
+        ) {
             setGameOver(true);
             return prevSnake;
-          }
+        }
 
-          const ateFood = newHead.x === food.x && newHead.y === food.y;
+        const hitSelf = prevSnake.some(part => {
+            return part.x === newHead.x && part.y === newHead.y;
+        });
 
-          if (ateFood) {
+        if (hitSelf) {
+            setGameOver(true);
+            return prevSnake;
+        }
+
+        const ateFood = newHead.x === food.x && newHead.y === food.y;
+
+        if (ateFood) {
             setFood(generateFood());
             setScore(prev => prev + 1);
             return [newHead, ...prevSnake];
-          }
+        }
 
-          return [newHead, ...prevSnake.slice(0, -1)];
+        return [newHead, ...prevSnake.slice(0, -1)];
         });
       }, 200);
 
