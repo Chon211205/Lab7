@@ -9,77 +9,254 @@
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
   <style>
+
     body {
-      background-color: #111;
-      color: white;
-      font-family: Arial, sans-serif;
-      text-align: center;
+    margin: 0;
+    padding: 0;
+
+    font-family: "Comic Sans MS", cursive;
+    background-color: #fffdf3;
+
+    background-image:
+        linear-gradient(#e6dcc3 1px, transparent 1px);
+
+    background-size: 100% 28px;
+    }
+
+    body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 60px;
+    width: 2px;
+    height: 100%;
+    background: #ff6b6b;
+    opacity: 0.6;
+    }
+
+    h1 {
+    color: #2d2d2d;
+    text-shadow: 2px 2px 0px #dcdcdc;
+    }
+
+    button {
+    font-family: "Comic Sans MS", cursive;
+    }
+
+    h1, h2 {
+    text-align: center;
     }
 
     .board {
-        position: relative;
-        width: 400px;
-        height: 400px;
-        margin: 30px auto;
-        background-color: #222;
-        border: 3px solid white;
+    position: relative;
+    width: 400px;
+    height: 400px;
+    margin: 30px auto;
+
+    background-color: #fefae0;
+
+    background-image:
+        linear-gradient(#e0dcc0 1px, transparent 1px),
+        linear-gradient(90deg, #e0dcc0 1px, transparent 1px);
+
+    background-size: 20px 20px;
+
+    border: 4px solid #333;
+    border-radius: 12px;
+    box-shadow: 4px 4px 0px #999;
     }
 
     .snake-part {
     position: absolute;
     width: 20px;
     height: 20px;
-    background-color: limegreen;
-    border: 1px solid #111;
-    box-sizing: border-box;
-    transition: left 0.18s linear, top 0.18s linear;
+
+    background-color: #7ed957;
+    border: 2px solid #2d6a4f; /* borde grueso tipo dibujo */
+    border-radius: 6px;
+    transition: left 0.11s linear, top 0.11s linear;
     }
 
     .head {
-    background-color: #00ffcc;
-    border-radius: 4px;
+    background-color: #95e06c;
+    border: 2px solid #1b4332;
     }
 
     .tail {
-    background-color: #006633;
-    border-radius: 2px;
+    background-color: #5fbf3a;
     }
 
     .eye {
     position: absolute;
-    width: 4px;
-    height: 4px;
-    background: black;
+    width: 6px;
+    height: 6px;
+    background: white;
+    border: 1px solid black;
     border-radius: 50%;
     }
 
-    /* posiciones base */
+    .eye::after {
+    content: "";
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: black;
+    border-radius: 50%;
+    top: 1px;
+    left: 1px;
+    }
+
     .eye1 { top: 4px; left: 4px; }
     .eye2 { top: 4px; right: 4px; }
 
-    /* mirando derecha */
     .right.eye1 { top: 6px; left: 10px; }
     .right.eye2 { top: 10px; left: 10px; }
 
-    /* mirando izquierda */
     .left.eye1 { top: 6px; left: 2px; }
     .left.eye2 { top: 10px; left: 2px; }
 
-    /* mirando arriba */
     .up.eye1 { top: 2px; left: 6px; }
     .up.eye2 { top: 2px; right: 6px; }
 
-    /* mirando abajo */
     .down.eye1 { bottom: 2px; left: 6px; }
     .down.eye2 { bottom: 2px; right: 6px; }
 
-    .food {
-        position: absolute;
-        width: 20px;
-        height: 20px;
-        background-color: red;
-        border-radius: 50%;
+    .mouth {
+    position: absolute;
+    width: 6px;
+    height: 4px;
+    background: #1b4332;
+    border-radius: 2px;
     }
+
+    .mouth-right {
+    top: 8px;
+    right: 1px;
+    }
+
+    .mouth-left {
+    top: 8px;
+    left: 1px;
+    }
+
+    .mouth-up {
+    top: 1px;
+    left: 7px;
+    transform: rotate(90deg);
+    }
+
+    .mouth-down {
+    bottom: 1px;
+    left: 7px;
+    transform: rotate(90deg);
+    }
+
+    .food {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+
+    background-color: #ff595e;
+    border: 2px solid #9e2a2b;
+    border-radius: 50%;
+    }
+
+    .stem {
+    position: absolute;
+    width: 3px;
+    height: 6px;
+    background: #5a3e1b;
+    top: -4px;
+    left: 8px;
+    border-radius: 2px;
+    }
+
+    .leaf {
+    position: absolute;
+    width: 6px;
+    height: 4px;
+    background: #4caf50;
+    top: -3px;
+    left: 10px;
+    border-radius: 50%;
+    transform: rotate(30deg);
+    }
+
+    .snake-part,
+    .food {
+    will-change: left, top;
+    }
+
+    .start-screen,
+    .restart-screen {
+    width: 430px;
+    margin: 40px auto;
+    padding: 35px 25px;
+    background-color: #fff7d6;
+    background-image:
+        linear-gradient(#f0e6b8 1px, transparent 1px),
+        linear-gradient(90deg, #f0e6b8 1px, transparent 1px);
+    background-size: 22px 22px;
+
+    border: 4px solid #2d2d2d;
+    border-radius: 18px;
+    box-shadow: 6px 6px 0px #8d8d8d;
+    text-align: center;
+    }
+
+    .start-title,
+    .gameover-title {
+    font-size: 48px;
+    color: #2d6a4f;
+    margin-bottom: 10px;
+    letter-spacing: 3px;
+    text-shadow: 2px 2px 0px #b7e4c7;
+    }
+
+    .gameover-title {
+    color: #c1121f;
+    text-shadow: 2px 2px 0px #ffb3b3;
+    }
+
+    .start-subtitle,
+    .score-text,
+    .instructions {
+    color: #333;
+    font-size: 16px;
+    }
+
+    .start-button,
+    .restart-button {
+    background-color: #7ed957;
+    color: #1b1b1b;
+    border: 3px solid #2d6a4f;
+    padding: 14px 35px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 14px;
+    cursor: pointer;
+    box-shadow: 4px 4px 0px #2d6a4f;
+    transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .restart-button {
+    background-color: #ff595e;
+    border-color: #9e2a2b;
+    box-shadow: 4px 4px 0px #9e2a2b;
+    color: white;
+    }
+
+    .start-button:hover,
+    .restart-button:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px #333;
+    }
+
+    .instructions {
+    margin-top: 25px;
+    line-height: 1.5;
+    }
+
   </style>
 </head>
 
@@ -114,6 +291,9 @@
                 <>
                     <div className={`eye eye1 ${getEyeClass(direction)}`}></div>
                     <div className={`eye eye2 ${getEyeClass(direction)}`}></div>
+                    <div className={`mouth ${getMouthClass(direction)}`}></div>
+                    <div className={`eye eye1 ${getEyeClass(direction)}`}></div>
+                    <div className={`eye eye2 ${getEyeClass(direction)}`}></div>
                 </>
                 )}
             </div>
@@ -130,16 +310,26 @@
     if (direction.y === 1) return "down";
     }
 
+    function getMouthClass(direction) {
+    if (direction.x === 1) return "mouth-right";
+    if (direction.x === -1) return "mouth-left";
+    if (direction.y === -1) return "mouth-up";
+    if (direction.y === 1) return "mouth-down";
+    }
+
     function Food({ food }) {
-        return (
+    return (
         <div
-            className="food"
-            style={{
-            left: food.x * cellSize,
-            top: food.y * cellSize
-            }}
-        />
-        );
+        className="food"
+        style={{
+            left: food.x * 20,
+            top: food.y * 20
+        }}
+        >
+        <div className="stem"></div>
+        <div className="leaf"></div>
+        </div>
+    );
     }
 
   function Score({ score }) {
@@ -155,6 +345,22 @@
     );
   }
 
+    function resetGame() {
+    setSnake([
+        { x: 10, y: 10 },
+        { x: 9, y: 10 },
+        { x: 8, y: 10 }
+    ]);
+    setDirection({ x: 1, y: 0 });
+    setFood({
+        x: Math.floor(Math.random() * boardSize),
+        y: Math.floor(Math.random() * boardSize)
+    });
+    setScore(0);
+    setGameOver(false);
+    setGameStarted(true); 
+    }
+
   function App() {
     const [snake, setSnake] = useState([
       { x: 10, y: 10 },
@@ -166,6 +372,7 @@
     const [food, setFood] = useState({ x: 5, y: 5 });
     const [score, setScore] = useState(0);
     const [gameOver, setGameOver] = useState(false);
+    const [gameStarted, setGameStarted] = useState(false);
 
     function generateFood() {
       return {
@@ -175,7 +382,7 @@
     }
 
     useEffect(() => {
-      if (gameOver) return;
+      if (gameOver || !gameStarted) return;
 
       const interval = setInterval(() => {
         setSnake(prevSnake => {
@@ -213,10 +420,10 @@
 
         return [newHead, ...prevSnake.slice(0, -1)];
         });
-      }, 180);
+      }, 120);
 
       return () => clearInterval(interval);
-    }, [direction, gameOver, food]);
+    }, [direction, gameOver, food, gameStarted]);
 
     useEffect(() => {
     const handleKey = (e) => {
@@ -225,19 +432,19 @@
         setDirection(prev => {
         switch (e.key) {
             case "ArrowUp":
-            if (prev.y === 1) return prev; // evita ir hacia abajo
+            if (prev.y === 1) return prev; 
             return { x: 0, y: -1 };
 
             case "ArrowDown":
-            if (prev.y === -1) return prev; // evita ir hacia arriba
+            if (prev.y === -1) return prev; 
             return { x: 0, y: 1 };
 
             case "ArrowLeft":
-            if (prev.x === 1) return prev; // evita ir derecha
+            if (prev.x === 1) return prev; 
             return { x: -1, y: 0 };
 
             case "ArrowRight":
-            if (prev.x === -1) return prev; // evita ir izquierda
+            if (prev.x === -1) return prev; 
             return { x: 1, y: 0 };
 
             default:
@@ -246,17 +453,60 @@
         });
     };
 
-    window.addEventListener("keydown", handleKey);
-    return () => window.removeEventListener("keydown", handleKey);
+        window.addEventListener("keydown", handleKey);
+        return () => window.removeEventListener("keydown", handleKey);
     }, [gameOver]);
 
+    function resetGame() {
+        setSnake([
+        { x: 10, y: 10 },
+        { x: 9, y: 10 },
+        { x: 8, y: 10 }
+        ]);
+        setDirection({ x: 1, y: 0 });
+        setFood(generateFood());
+        setScore(0);
+        setGameOver(false);
+        setGameStarted(true);
+    }
+
     return (
-      <div>
-        <h1>Snake React</h1>
-        <Score score={score} />
-        {gameOver && <h2>Game Over</h2>}
-        <Board snake={snake} food={food} direction={direction} />
-      </div>
+        <div>
+        {!gameStarted && (
+        <div className="start-screen">
+            <h1 className="start-title">SNAKE</h1>
+            <p className="start-subtitle">Come, crece y evita chocar.</p>
+
+            <button className="start-button" onClick={() => setGameStarted(true)}>
+            Iniciar juego
+            </button>
+
+            <div className="instructions">
+            <p>Usa las flechas del teclado para moverte</p>
+            <p>Evita los bordes y tu propia cola</p>
+            </div>
+        </div>
+        )}
+
+        {gameStarted && !gameOver && (
+            <>
+            <h1>Snake React</h1>
+            <Score score={score} />
+            <Board snake={snake} food={food} direction={direction} />
+            </>
+        )}
+
+        {gameOver && (
+        <div className="restart-screen">
+            <h2 className="gameover-title">Game Over</h2>
+            <p className="score-text">Puntaje: {score}</p>
+
+            <button className="restart-button" onClick={resetGame}>
+            Jugar de nuevo
+            </button>
+        </div>
+        )}
+        </div>
     );
   }
 
