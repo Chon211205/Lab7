@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Snake React</title>
+
+  <!--React y babel via cdn-->
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+
+  <style>
+    body {
+      background-color: #111;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+    .board {
+      position: relative;
+      width: 400px;
+      height: 400px;
+      margin: 30px auto;
+      background-color: #222;
+      border: 3px solid white;
+    }
+
+    .snake-part {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: limegreen;
+      border: 1px solid #111;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const cellSize = 20;
+
+    //Componente de la serpiente.
+    function Snake({ snake }) {
+      return (
+        <>
+          {snake.map((part, index) => (
+            <div
+              key={index}
+              className="snake-part"
+              style={{
+                left: part.x * cellSize,
+                top: part.y * cellSize
+              }}
+            ></div>
+          ))}
+        </>
+      );
+    }
+
+    //Componente del tablero
+    function Board({ snake }) {
+      return (
+        <div className="board">
+          <Snake snake={snake} />
+        </div>
+      );
+    }
+
+    //Componente del contenedor principal
+    function App() {
+      const snake = [
+        { x: 10, y: 10 },
+        { x: 9, y: 10 },
+        { x: 8, y: 10 }
+      ];
+
+      return (
+        <div>
+          <h1>Snake</h1>
+          <Board snake={snake} />
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>
