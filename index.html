@@ -209,27 +209,35 @@
     }, [direction, gameOver, food]);
 
     useEffect(() => {
-      const handleKey = (e) => {
+    const handleKey = (e) => {
         if (gameOver) return;
 
+        setDirection(prev => {
         switch (e.key) {
-          case "ArrowUp":
-            setDirection({ x: 0, y: -1 });
-            break;
-          case "ArrowDown":
-            setDirection({ x: 0, y: 1 });
-            break;
-          case "ArrowLeft":
-            setDirection({ x: -1, y: 0 });
-            break;
-          case "ArrowRight":
-            setDirection({ x: 1, y: 0 });
-            break;
-        }
-      };
+            case "ArrowUp":
+            if (prev.y === 1) return prev; // evita ir hacia abajo
+            return { x: 0, y: -1 };
 
-      window.addEventListener("keydown", handleKey);
-      return () => window.removeEventListener("keydown", handleKey);
+            case "ArrowDown":
+            if (prev.y === -1) return prev; // evita ir hacia arriba
+            return { x: 0, y: 1 };
+
+            case "ArrowLeft":
+            if (prev.x === 1) return prev; // evita ir derecha
+            return { x: -1, y: 0 };
+
+            case "ArrowRight":
+            if (prev.x === -1) return prev; // evita ir izquierda
+            return { x: 1, y: 0 };
+
+            default:
+            return prev;
+        }
+        });
+    };
+
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
     }, [gameOver]);
 
     return (
