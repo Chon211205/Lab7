@@ -2,14 +2,17 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Snake React</title>
+  <title>Snake</title>
 
+  <!--React y babel por medio de cdn-->
   <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
+  <!--Estilo del snake con css-->
   <style>
 
+    /**Cuerpo del html*/
     body {
     margin: 0;
     padding: 0;
@@ -47,6 +50,7 @@
     text-align: center;
     }
 
+    /**Disenio del borde*/
     .board {
     position: relative;
     width: 400px;
@@ -66,6 +70,7 @@
     box-shadow: 4px 4px 0px #999;
     }
 
+    /**Disenio del snake*/
     .snake-part {
     position: absolute;
     width: 20px;
@@ -157,6 +162,7 @@
     border-radius: 50%;
     }
 
+    /**Disenio de la manzana*/
     .food {
     position: absolute;
     width: 20px;
@@ -193,6 +199,7 @@
     will-change: left, top;
     }
 
+    /**Disenio de la pantalla de inicio de juego, gameover y restart game*/
     .start-screen,
     .restart-screen {
     width: 430px;
@@ -266,6 +273,7 @@
   </style>
 </head>
 
+<!--Logica del snake-->
 <body>
   <div id="root"></div>
 
@@ -275,6 +283,7 @@
   const cellSize = 20;
   const boardSize = 20;
 
+    //Prop del snake
     function Snake({ snake, direction, isEating }) {
     return (
         <>
@@ -309,6 +318,7 @@
     );
     }
 
+    //Prop de la animacion de los ojos del snake
     function getEyeClass(direction) {
     if (direction.x === 1) return "right";
     if (direction.x === -1) return "left";
@@ -316,6 +326,7 @@
     if (direction.y === 1) return "down";
     }
 
+    //Prop de la animacion de la boca del snake
     function getMouthClass(direction) {
     if (direction.x === 1) return "mouth-right";
     if (direction.x === -1) return "mouth-left";
@@ -323,6 +334,7 @@
     if (direction.y === 1) return "mouth-down";
     }
 
+    //Prop de la manzana
     function Food({ food }) {
     return (
         <div
@@ -338,15 +350,18 @@
     );
     }
 
+    //Prop de score
   function Score({ score }) {
     return <h2>Puntaje: {score}</h2>;
   }
 
+  //Prop del nivel de dificultad
     function Level({ score }) {
     const level = Math.floor(score / 3) + 1;
     return <h2>Nivel: {level}</h2>;
     }
 
+    //Prop del board
   function Board({ snake, food, direction, isEating }) {
     return (
       <div className="board">
@@ -356,6 +371,7 @@
     );
   }
 
+    //Prop para reiniciar el juego
     function resetGame() {
     setSnake([
         { x: 10, y: 10 },
@@ -372,6 +388,7 @@
     setGameStarted(true); 
     }
 
+    //Prop general del juego
   function App() {
     const [snake, setSnake] = useState([
       { x: 10, y: 10 },
@@ -379,6 +396,7 @@
       { x: 8, y: 10 }
     ]);
 
+    //Estados
     const [direction, setDirection] = useState({ x: 1, y: 0 });
     const [food, setFood] = useState({ x: 5, y: 5 });
     const [isEating, setIsEating] = useState(false);
@@ -387,6 +405,7 @@
     const [speed, setSpeed] = useState(100);
     const [gameStarted, setGameStarted] = useState(false);
 
+    //Funcion para generar la manzana
     function generateFood() {
       return {
         x: Math.floor(Math.random() * boardSize),
@@ -394,6 +413,7 @@
       };
     }
 
+    //Efectos
     useEffect(() => {
       if (gameOver || !gameStarted) return;
 
@@ -453,6 +473,7 @@
 
         if (gameOver) return;
 
+        //Funcionamiento del teclado (controles)
         setDirection(prev => {
         switch (e.key) {
             case "ArrowUp":
@@ -481,6 +502,7 @@
         return () => window.removeEventListener("keydown", handleKey);
     }, [gameOver, gameStarted]);
 
+    //Funcion para reiniciar el juego
     function resetGame() {
         setSnake([
         { x: 10, y: 10 },
@@ -495,7 +517,9 @@
         setSpeed(180);
     }
 
+    //UI mostrada.
     return (
+        //Inicio del juego, render del juego, y gameover del juego
         <div>
         {!gameStarted && (
         <div className="start-screen">
@@ -512,7 +536,7 @@
             </div>
         </div>
         )}
-
+        
         {gameStarted && !gameOver && (
             <>
             <h1>Snake React</h1>
